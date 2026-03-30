@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Receipt</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>🚗 ParkManager</h2>
+        <a href="/">Dashboard</a>
+        <a href="/entry">Vehicle Entry</a>
+        <a href="/exit">Vehicle Exit</a>
+        <a href="/view">View Records</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <div class="topbar">
+            <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+            <span>Receipt</span>
+        </div>
+
+        <div class="container">
+
+            <div class="card receipt-card">
+
+                <h2 style="text-align:center;">🧾 Parking Receipt</h2>
+
+                <div class="receipt-info">
+                    <p><strong>Vehicle No:</strong> {{ vehicle }}</p>
+                    <p><strong>Entry Time:</strong> {{ entry }}</p>
+                    <p><strong>Exit Time:</strong> {{ exit }}</p>
+                    <p><strong>Total Hours:</strong> {{ hours }}</p>
+                    <p class="amount"><strong>Total Amount:</strong> ₹{{ bill }}</p>
+                </div>
+
+                <div class="receipt-actions">
+                    <button onclick="window.print()" class="btn btn-dark">Print</button>
+                    <a href="/"><button class="btn btn-blue">Back to Dashboard</button></a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('active');
+    document.querySelector('.main').classList.toggle('shift');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="layout">
+
+    <div class="sidebar">
+        <h2>🚗 ParkManager</h2>
+        <a href="/">Dashboard</a>
+        <a href="/entry">Vehicle Entry</a>
+        <a href="/exit">Vehicle Exit</a>
+        <a href="/view">View Records</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <div class="main">
+
+        <div class="topbar">
+            <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+            <span>Dashboard</span>
+        </div>
+
+        <div class="container">
+
+            <div class="grid">
+                <div class="card stat">
+                    <p>Total Slots</p>
+                    <h2>{{ total }}</h2>
+                </div>
+
+                <div class="card stat">
+                    <p>Available</p>
+                    <h2 class="green">{{ available }}</h2>
+                </div>
+
+                <div class="card stat">
+                    <p>Occupied</p>
+                    <h2 class="red">{{ occupied }}</h2>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Parking Slots</h3>
+
+                <div class="slots">
+                    {% for i in range(1, total+1) %}
+                        {% if i in occupied_slots %}
+                            <div class="slot occupied">{{ i }}</div>
+                        {% else %}
+                            <div class="slot available">{{ i }}</div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Vehicle Entry</h3>
+                        <a href="/entry">
+                            <button class="btn btn-blue">Register Entry</button>
+                        </a>
+                    </div>
+                    <div class="card">
+                        <h3>Vehicle Exit</h3>
+                        <a href="/exit">
+                            <button class="btn btn-red">Process Exit</button>
+                        </a>
+                    </div>
+                    <div class="card">
+                        <h3>View Records</h3>
+                        <a href="/view">
+                            <button class="btn btn-dark">View</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('active');
+    document.querySelector('.main').classList.toggle('shift');
+}
+</script>
+</body>
+</html>

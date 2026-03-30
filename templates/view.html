@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parking Records</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>🚗 ParkManager</h2>
+        <a href="/">Dashboard</a>
+        <a href="/entry">Vehicle Entry</a>
+        <a href="/exit">Vehicle Exit</a>
+        <a href="/view">View Records</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <!-- 🔥 TOPBAR -->
+        <div class="topbar">
+            <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+            <span>Parking Records</span>
+        </div>
+
+        <div class="container">
+
+            <div class="card">
+
+                <h2 style="text-align:center;">Parking Records</h2>
+
+                <!-- 🔥 TABLE WRAPPER -->
+                <div class="table-container">
+
+                    <table>
+                        <tr>
+                            <th>#</th>
+                            <th>Vehicle</th>
+                            <th>Slot</th>
+                            <th>Entry</th>
+                            <th>Exit</th>
+                            <th>Status</th>
+                            <th>Type</th>
+                        </tr>
+
+                        {% for row in data %}
+                        <tr>
+                            <td>{{ row[0] }}</td> <!-- ID -->
+                            <td>{{ row[1] }}</td> <!-- Vehicle -->
+                            <td>{{ row[6] }}</td> <!-- Slot -->
+                            <td>{{ row[3] }}</td> <!-- Entry -->
+                            <td>{{ row[4] if row[4] else '-' }}</td> <!-- Exit -->
+                            <td>
+                                {% if row[5] == 'IN' %}
+                                <span class="green">IN</span>
+                                {% else %}
+                                <span class="red">OUT</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if row[2] == '2' %} 2W {% else %} 4W {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('active');
+    document.querySelector('.main').classList.toggle('shift');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exit</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="layout">
+
+<div class="sidebar">
+    <h2>🚗 ParkManager</h2>
+    <a href="/">Dashboard</a>
+    <a href="/entry">Vehicle Entry</a>
+    <a href="/exit">Vehicle Exit</a>
+    <a href="/view">View Records</a>
+    <a href="/logout">Logout</a>
+</div>
+
+<div class="main">
+
+<div class="header">Vehicle Exit</div>
+
+<div class="container">
+    <div class="card">
+        <h2 style="text-align:center;">Vehicle Exit</h2>
+        <form method="POST" class="form-box">
+            <input type="text" name="vehicle_no"
+            placeholder="Enter Vehicle No (UP12AB1234)" required>
+            <button class="btn btn-red">Process Exit</button>
+        </form>
+    </div>
+</div>
+
+</div>
+</div>
+<script>
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('active');
+    document.querySelector('.main').classList.toggle('shift');
+}
+</script>
+
+</body>
+</html>

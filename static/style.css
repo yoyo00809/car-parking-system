@@ -1,0 +1,317 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+}
+
+/* LAYOUT */
+.layout {
+    display: flex;
+}
+
+/* SIDEBAR 🔥 */
+.sidebar {
+    width: 220px;
+    background: #1f2937;
+    color: white;
+    height: 100vh;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.sidebar a:hover {
+    background: #374151;
+}
+
+/* MAIN CONTENT */
+.main {
+    margin-left: 240px;
+    width: 100%;
+}
+
+/* HEADER */
+.header {
+    background: white;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+
+/* CONTAINER */
+.container {
+    padding: 20px;
+}
+
+/* CARDS */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* GRID */
+.grid {
+    display: flex;
+    gap: 20px;
+}
+
+/* STATS */
+.stat {
+    flex: 1;
+    text-align: center;
+}
+
+.green { color: green; }
+.red { color: red; }
+
+/* BUTTONS */
+.btn {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-blue { background: #3b82f6; }
+.btn-red { background: #ef4444; }
+.btn-dark { background: #111827; }
+
+/* SLOTS */
+.slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.slot {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.available {
+    background: #d1fae5;
+    color: green;
+}
+
+.occupied {
+    background: #fee2e2;
+    color: red;
+}
+
+/* LOGIN PAGE */
+.login-body {
+    background: #f4f6f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.login-card input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+/* TOGGLE SIDEBAR 🔥 */
+
+.sidebar {
+    transform: translateX(-100%);
+    transition: 0.3s;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+.main {
+    margin-left: 0;
+    transition: 0.3s;
+}
+
+.main.shift {
+    margin-left: 240px;
+}
+
+/* TOP BAR */
+.topbar {
+    background: #1f2937;
+    color: white;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.menu-btn {
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+/* FORM FIX 🔥 */
+
+.form-box {
+    max-width: 400px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* INPUT FIX */
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+/* BUTTON FIX */
+.btn {
+    padding: 12px;
+    font-size: 15px;
+}
+
+/* RECEIPT PAGE 🔥 */
+
+.receipt-card {
+    max-width: 500px;
+    margin: auto;
+    text-align: left;
+}
+
+.receipt-info p {
+    font-size: 15px;
+    margin: 10px 0;
+}
+
+.amount {
+    font-size: 18px;
+    color: #16a34a;
+    font-weight: bold;
+}
+
+.receipt-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+/* TABLE FIX 🔥 */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Header */
+th {
+    background: #1f2937;
+    color: white;
+    padding: 12px;
+    font-size: 14px;
+}
+
+/* Rows */
+td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+/* Zebra effect */
+tr:nth-child(even) {
+    background: #f9fafb;
+}
+
+/* Hover effect 🔥 */
+tr:hover {
+    background: #e5e7eb;
+}
+
+/* Status colors */
+.green {
+    color: green;
+    font-weight: bold;
+}
+
+.red {
+    color: red;
+    font-weight: bold;
+}
+/* TABLE SCROLL FIX 🔥 */
+.table-container {
+    overflow-x: auto;
+}
+
+/* MESSAGE PAGE 🔥 */
+
+.message-card {
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+}
+
+.message-actions {
+    margin-top: 20px;
+}
+select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}

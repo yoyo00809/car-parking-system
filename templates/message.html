@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Message</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>🚗 ParkManager</h2>
+        <a href="/">Dashboard</a>
+        <a href="/entry">Vehicle Entry</a>
+        <a href="/exit">Vehicle Exit</a>
+        <a href="/view">View Records</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <!-- Topbar -->
+        <div class="topbar">
+            <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+            <span>Status</span>
+        </div>
+
+        <div class="container">
+
+            <div class="card message-card">
+
+                <h2 style="text-align:center;">✅ {{ message }}</h2>
+
+                <div class="message-actions">
+                    <a href="/">
+                        <button class="btn btn-blue">Go to Dashboard</button>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('active');
+    document.querySelector('.main').classList.toggle('shift');
+}
+</script>
+
+</body>
+</html>
