@@ -41,7 +41,7 @@ def login():
             session['user'] = 'admin'
             return redirect('/')
         else:
-            return render_template('message.html', message="Invalid Login!")
+            return render_template('message.html',message="Invalid Login!",status="error")
 
     return render_template('login.html')
 
@@ -79,29 +79,44 @@ def entry():
         return redirect('/login')
 
     if request.method == 'POST':
-        vehicle = request.form['vehicle_no'].upper()
+        vehicle = request.form['vehicle_no'].strip().upper()
         v_type = request.form['vehicle_type']
         time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        pattern = r'^[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}$'
+        # 🚨 VALIDATION (Vehicle format)
+        pattern = r'^[A-Z]{2}[0-9]{2}[A-Z]{1,2}[0-9]{4}$'
         if not re.match(pattern, vehicle):
-            return render_template('message.html', message="Invalid Vehicle Number!")
+            return render_template('message.html',
+                                   message="Invalid Vehicle Number!",
+                                   status="error")
 
         conn = sqlite3.connect('parking.db')
         c = conn.cursor()
 
-        c.execute("SELECT * FROM parking WHERE vehicle_no=? AND status='IN'", (vehicle,))
-        if c.fetchone():
-            conn.close()
-            return render_template('message.html', message="Vehicle already inside!")
+        # 🔥 ✅ DUPLICATE CHECK (PUT HERE)
+        c.execute("""
+            SELECT COUNT(*) FROM parking 
+            WHERE vehicle_no=? AND status='IN'
+        """, (vehicle,))
+        exists = c.fetchone()[0]
 
+        if exists > 0:
+            conn.close()
+            return render_template('message.html',
+                                   message="Vehicle already inside!",
+                                   status="error")
+
+        # 🚗 SLOT CHECK
         c.execute("SELECT COUNT(*) FROM parking WHERE status='IN'")
         slot_no = c.fetchone()[0] + 1
 
         if slot_no > TOTAL_SLOTS:
             conn.close()
-            return render_template('message.html', message="Parking Full!")
+            return render_template('message.html',
+                                   message="Parking Full!",
+                                   status="error")
 
+        # ✅ INSERT DATA
         c.execute("""
             INSERT INTO parking (vehicle_no, vehicle_type, entry_time, status, slot_no)
             VALUES (?, ?, ?, ?, ?)
@@ -110,7 +125,9 @@ def entry():
         conn.commit()
         conn.close()
 
-        return render_template('message.html', message=f"Vehicle Parked at Slot {slot_no}")
+        return render_template('message.html',
+                               message=f"Vehicle Parked at Slot {slot_no}",
+                               status="success")
 
     return render_template('entry.html')
 
