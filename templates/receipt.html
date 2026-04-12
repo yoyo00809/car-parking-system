@@ -1,64 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Receipt</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Receipt - Park.Guard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="layout">
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>🚗 ParkManager</h2>
-        <a href="/">Dashboard</a>
-        <a href="/entry">Vehicle Entry</a>
-        <a href="/exit">Vehicle Exit</a>
-        <a href="/view">View Records</a>
-        <a href="/logout">Logout</a>
+<nav class="navbar">
+    <a href="/" class="nav-brand">
+        <i class="fa-solid fa-radar"></i>
+        <h2>Park.Guard</h2>
+    </a>
+    
+    <div class="nav-menu">
+        <a href="/" class="nav-pill"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
     </div>
+</nav>
 
-    <!-- Main -->
-    <div class="main">
-
-        <div class="topbar">
-            <span class="menu-btn" onclick="toggleSidebar()">☰</span>
-            <span>Receipt</span>
+<div class="main-wrapper">
+    
+    <div class="glass gateway-card" style="max-width: 450px; padding: 40px;">
+        
+        <div style="text-align: center; margin-bottom: 30px; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 20px;">
+            <i class="fa-solid fa-file-invoice-dollar" style="font-size: 40px; color: var(--neon-blue); margin-bottom: 15px; filter: drop-shadow(0 0 10px var(--neon-blue-glow));"></i>
+            <h2 style="font-size: 24px; letter-spacing: 1px;">CLEARANCE INVOICE</h2>
+            <p style="color: var(--neon-green); font-size: 13px; margin-top: 5px;"><i class="fa-solid fa-check"></i> Processed Successfully</p>
         </div>
 
-        <div class="container">
-
-            <div class="card receipt-card">
-
-                <h2 style="text-align:center;">🧾 Parking Receipt</h2>
-
-                <div class="receipt-info">
-                    <p><strong>Vehicle No:</strong> {{ vehicle }}</p>
-                    <p><strong>Entry Time:</strong> {{ entry }}</p>
-                    <p><strong>Exit Time:</strong> {{ exit }}</p>
-                    <p><strong>Total Hours:</strong> {{ hours }}</p>
-                    <p class="amount"><strong>Total Amount:</strong> ₹{{ bill }}</p>
-                </div>
-
-                <div class="receipt-actions">
-                    <button onclick="window.print()" class="btn btn-dark">Print</button>
-                    <a href="/"><button class="btn btn-blue">Back to Dashboard</button></a>
-                </div>
-
+        <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px;">
+            <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-secondary);">Target ID</span>
+                <span style="font-weight: 600; color: white;">{{ vehicle }}</span>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-secondary);">Entity Class</span>
+                <span>{{ 'Class A (2W)' if vehicle_type == '2' else 'Class B (4W)' }}</span>
             </div>
 
+            <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-secondary);">Time In</span>
+                <span>{{ entry }}</span>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-secondary);">Time Out</span>
+                <span>{{ exit }}</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-secondary);">Duration</span>
+                <span>{{ hours }} Hour(s)</span>
+            </div>
         </div>
 
+        <div style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 20px; text-align: center;">
+            <div style="color: var(--text-secondary); font-size: 13px; text-transform: uppercase;">Total Assessment</div>
+            <div style="font-size: 36px; font-weight: 700; color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue-glow);">₹{{ bill }}</div>
+        </div>
+
+        <div style="display: flex; gap: 15px; margin-top: 25px;">
+            <button onclick="window.print()" class="btn btn-primary" style="flex: 1;"><i class="fa-solid fa-print"></i> Print PDF</button>
+            <a href="/" class="btn btn-dark" style="flex: 1;"><i class="fa-solid fa-house"></i> Home</a>
+        </div>
+        
     </div>
 
 </div>
 
-<script>
-function toggleSidebar() {
-    document.querySelector('.sidebar').classList.toggle('active');
-    document.querySelector('.main').classList.toggle('shift');
+<!-- Fix print layout so it doesn't get cut off -->
+<style>
+@media print {
+    @page { margin: 0; }
+    body { 
+        background: white !important; 
+        color: black !important; 
+        margin: 0 !important;
+        padding: 20px !important;
+    }
+    .main-wrapper {
+        padding: 0 !important;
+        width: 100% !important;
+    }
+    .navbar, button, a {
+        display: none !important;
+    }
+    .gateway-card {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: white !important;
+        color: black !important;
+    }
+    .gateway-card::before, .gateway-card::after { display: none !important; }
+    div[style*="background: rgba(56, 189, 248, 0.1)"] {
+        background: transparent !important;
+        border: 2px solid black !important;
+        color: black !important;
+    }
+    span[style*="color: var(--text-secondary)"], 
+    span[style*="color: white"],
+    div[style*="color: var(--neon-blue)"],
+    h2 { color: black !important; text-shadow: none !important; }
 }
-</script>
+</style>
 
 </body>
 </html>

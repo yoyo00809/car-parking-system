@@ -1,64 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Message</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Notice - Park.Guard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="layout">
+<nav class="navbar">
+    <a href="/" class="nav-brand">
+        <i class="fa-solid fa-radar"></i>
+        <h2>Park.Guard</h2>
+    </a>
+</nav>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>🚗 ParkManager</h2>
-        <a href="/">Dashboard</a>
-        <a href="/entry">Vehicle Entry</a>
-        <a href="/exit">Vehicle Exit</a>
-        <a href="/view">View Records</a>
-        <a href="/logout">Logout</a>
-    </div>
+<div class="main-wrapper">
+    
+    <div class="glass gateway-card" style="text-align: center; max-width: 450px;">
+        
+        {% if status == 'success' %}
+            <i class="fa-solid fa-shield-check" style="font-size: 60px; color: var(--neon-green); filter: drop-shadow(0 0 15px var(--neon-green-glow)); margin-bottom: 20px;"></i>
+            <h2 style="font-size: 24px; color: var(--neon-green);">Operation Verified</h2>
+        {% else %}
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 60px; color: var(--neon-red); filter: drop-shadow(0 0 15px var(--neon-red-glow)); margin-bottom: 20px;"></i>
+            <h2 style="font-size: 24px; color: var(--neon-red);">Authorization Failed</h2>
+        {% endif %}
+        
+        <p style="font-size: 16px; margin: 20px 0 30px 0; color: var(--text-primary);">{{ message }}</p>
 
-    <!-- Main -->
-    <div class="main">
-
-        <!-- Topbar -->
-        <div class="topbar">
-            <span class="menu-btn" onclick="toggleSidebar()">☰</span>
-            <span>Status</span>
-        </div>
-
-        <div class="container">
-
-            <div class="card message-card">
-
-                <h2 style="text-align:center;">
-                    {% if status == "error" %}
-                    ❌ {{ message }}
-                    {% else %}
-                    ✅ {{ message }}
-                    {% endif %}
-                </h2>
-
-                <div class="message-actions">
-                    <a href="/">
-                        <button class="btn btn-blue">Go to Dashboard</button>
-                    </a>
-                </div>
-
-            </div>
-
-        </div>
-
+        <a href="/" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Return to Dashboard</a>
+        
     </div>
 
 </div>
-
-<script>
-function toggleSidebar() {
-    document.querySelector('.sidebar').classList.toggle('active');
-    document.querySelector('.main').classList.toggle('shift');
-}
-</script>
 
 </body>
 </html>

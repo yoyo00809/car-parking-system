@@ -1,68 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Entry</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gateway Entry - Park.Guard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="layout">
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>🚗 ParkManager</h2>
-        <a href="/">Dashboard</a>
-        <a href="/entry">Vehicle Entry</a>
-        <a href="/exit">Vehicle Exit</a>
-        <a href="/view">View Records</a>
-        <a href="/logout">Logout</a>
+<nav class="navbar">
+    <a href="/" class="nav-brand">
+        <i class="fa-solid fa-radar"></i>
+        <h2>Park.Guard</h2>
+    </a>
+    
+    <div class="nav-menu">
+        <a href="/" class="nav-pill"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a href="/entry" class="nav-pill active"><i class="fa-solid fa-right-to-bracket"></i> Entry</a>
+        <a href="/exit" class="nav-pill"><i class="fa-solid fa-right-from-bracket"></i> Exit</a>
+        <a href="/view" class="nav-pill"><i class="fa-solid fa-database"></i> Records</a>
     </div>
+</nav>
 
-    <!-- Main -->
-    <div class="main">
-
-        <!-- 🔥 TOPBAR -->
-        <div class="topbar">
-            <span class="menu-btn" onclick="toggleSidebar()">☰</span>
-            <span>Vehicle Entry</span>
+<div class="main-wrapper">
+    
+    <div class="glass gateway-card">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <i class="fa-solid fa-fingerprint" style="font-size: 50px; color: var(--neon-blue); filter: drop-shadow(0 0 10px var(--neon-blue-glow)); margin-bottom: 20px;"></i>
+            <h2 style="font-size: 28px;">Authorization Gateway</h2>
+            <p style="color: var(--text-secondary); margin-top: 5px;">Register incoming vehicle to sector</p>
         </div>
 
-        <div class="container">
-
-            <div class="card">
-
-                <h2 style="text-align:center;">Vehicle Entry</h2>
-
-                <!-- ✅ ONLY ONE FORM -->
-                <form method="POST" class="form-box">
-
-                    <input type="text" name="vehicle_no"
-                           placeholder="Enter Vehicle No (UP12AB1234)" required>
-
-                    <select name="vehicle_type" required>
-                        <option value="">Select Vehicle Type</option>
-                        <option value="2">2-Wheeler</option>
-                        <option value="4">4-Wheeler</option>
-                    </select>
-
-                    <button class="btn btn-blue">Register Entry</button>
-
-                </form>
-
+        <form method="POST" action="/entry">
+            <div class="form-group">
+                <label>Target Identifier</label>
+                <input type="text" name="vehicle_no" class="form-control" placeholder="e.g. MH12AB1234" required style="text-transform: uppercase;">
+                <i class="fa-solid fa-car-side" style="position: absolute; right: 20px; top: 40px; color: var(--text-secondary);"></i>
             </div>
 
-        </div>
+            <div class="form-group">
+                <label>Entity Class</label>
+                <select name="vehicle_type" class="form-control" required>
+                    <option value="2">Class A (2-Wheeler)</option>
+                    <option value="4" selected>Class B (4-Wheeler)</option>
+                </select>
+                <i class="fa-solid fa-layer-group" style="position: absolute; right: 20px; top: 40px; color: var(--text-secondary);"></i>
+            </div>
 
+            <button type="submit" class="btn btn-primary" style="margin-top: 15px;">
+                <i class="fa-solid fa-microchip"></i> Authorize Entry
+            </button>
+        </form>
     </div>
 
 </div>
-
-<script>
-function toggleSidebar() {
-    document.querySelector('.sidebar').classList.toggle('active');
-    document.querySelector('.main').classList.toggle('shift');
-}
-</script>
 
 </body>
 </html>

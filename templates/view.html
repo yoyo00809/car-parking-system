@@ -1,90 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Parking Records</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database - Park.Guard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="layout">
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>🚗 ParkManager</h2>
-        <a href="/">Dashboard</a>
-        <a href="/entry">Vehicle Entry</a>
-        <a href="/exit">Vehicle Exit</a>
-        <a href="/view">View Records</a>
-        <a href="/logout">Logout</a>
+<nav class="navbar">
+    <a href="/" class="nav-brand">
+        <i class="fa-solid fa-radar"></i>
+        <h2>Park.Guard</h2>
+    </a>
+    
+    <div class="nav-menu">
+        <a href="/" class="nav-pill"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a href="/entry" class="nav-pill"><i class="fa-solid fa-right-to-bracket"></i> Entry</a>
+        <a href="/exit" class="nav-pill"><i class="fa-solid fa-right-from-bracket"></i> Exit</a>
+        <a href="/view" class="nav-pill active"><i class="fa-solid fa-database"></i> Records</a>
     </div>
+</nav>
 
-    <!-- Main -->
-    <div class="main">
-
-        <!-- 🔥 TOPBAR -->
-        <div class="topbar">
-            <span class="menu-btn" onclick="toggleSidebar()">☰</span>
-            <span>Parking Records</span>
+<div class="main-wrapper">
+    
+    <div class="glass table-wrapper">
+        <div class="section-header" style="margin-bottom: 30px;">
+            <i class="fa-solid fa-server" style="font-size: 24px; color: var(--neon-blue); filter: drop-shadow(0 0 10px var(--neon-blue-glow));"></i>
+            <h3 class="section-title">System Activity Logs</h3>
         </div>
 
-        <div class="container">
-
-            <div class="card">
-
-                <h2 style="text-align:center;">Parking Records</h2>
-
-                <!-- 🔥 TABLE WRAPPER -->
-                <div class="table-container">
-
-                    <table>
-                        <tr>
-                            <th>#</th>
-                            <th>Vehicle</th>
-                            <th>Slot</th>
-                            <th>Entry</th>
-                            <th>Exit</th>
-                            <th>Status</th>
-                            <th>Type</th>
-                        </tr>
-
-                        {% for row in data %}
-                        <tr>
-                            <td>{{ row[0] }}</td> <!-- ID -->
-                            <td>{{ row[1] }}</td> <!-- Vehicle -->
-                            <td>{{ row[6] }}</td> <!-- Slot -->
-                            <td>{{ row[3] }}</td> <!-- Entry -->
-                            <td>{{ row[4] if row[4] else '-' }}</td> <!-- Exit -->
-                            <td>
-                                {% if row[5] == 'IN' %}
-                                <span class="green">IN</span>
-                                {% else %}
-                                <span class="red">OUT</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if row[2] == '2' %} 2W {% else %} 4W {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-
-                    </table>
-
-                </div>
-
-            </div>
-
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Access ID</th>
+                        <th>Identifier</th>
+                        <th>Class</th>
+                        <th>Node</th>
+                        <th>Time In</th>
+                        <th>Time Out</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data %}
+                    <tr>
+                        <td style="color: var(--text-secondary);">#{{ row[0] }}</td>
+                        <td style="color: var(--neon-blue); font-weight: 600;">{{ row[1] }}</td>
+                        <td>{{ 'Class A (2W)' if row[2] == '2' else 'Class B (4W)' }}</td>
+                        <td><span style="background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 6px;">S-{{ row[6] }}</span></td>
+                        <td style="color: var(--text-secondary);">{{ row[3] }}</td>
+                        <td style="color: var(--text-secondary);">{{ row[4] if row[4] else '—' }}</td>
+                        <td>
+                            {% if row[5] == 'IN' %}
+                            <span class="badge badge-active">ACTIVE</span>
+                            {% else %}
+                            <span class="badge badge-inactive">ARCHIVED</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    
+                    {% if not data %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 50px; color: var(--text-secondary);">
+                            <i class="fa-solid fa-ghost" style="font-size: 40px; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <p>No records located in mainframe.</p>
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
         </div>
-
     </div>
 
 </div>
-
-<script>
-function toggleSidebar() {
-    document.querySelector('.sidebar').classList.toggle('active');
-    document.querySelector('.main').classList.toggle('shift');
-}
-</script>
 
 </body>
 </html>

@@ -59,8 +59,8 @@ def index():
     conn = sqlite3.connect('parking.db')
     c = conn.cursor()
 
-    c.execute("SELECT slot_no FROM parking WHERE status='IN'")
-    occupied_slots = [row[0] for row in c.fetchall()]
+    c.execute("SELECT slot_no, vehicle_type FROM parking WHERE status='IN'")
+    occupied_slots = {int(row[0]): str(row[1]) for row in c.fetchall() if row[0] is not None}
 
     conn.close()
 
@@ -84,7 +84,7 @@ def entry():
         time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # 🚨 VALIDATION (Vehicle format)
-        pattern = r'^[A-Z]{2}[0-9]{2}[A-Z]{1,2}[0-9]{4}$'
+        pattern = r'^[A-Z]{2}[0-9]{1,2}[A-Z]{0,2}[0-9]{1,4}$'
         if not re.match(pattern, vehicle):
             return render_template('message.html',
                                    message="Invalid Vehicle Number!",
@@ -107,10 +107,16 @@ def entry():
                                    status="error")
 
         # 🚗 SLOT CHECK
-        c.execute("SELECT COUNT(*) FROM parking WHERE status='IN'")
-        slot_no = c.fetchone()[0] + 1
+        c.execute("SELECT slot_no FROM parking WHERE status='IN'")
+        used_slots = [row[0] for row in c.fetchall() if row[0] is not None]
 
-        if slot_no > TOTAL_SLOTS:
+        slot_no = None
+        for i in range(1, TOTAL_SLOTS + 1):
+            if i not in used_slots:
+                slot_no = i
+                break
+
+        if slot_no is None:
             conn.close()
             return render_template('message.html',
                                    message="Parking Full!",
@@ -138,7 +144,7 @@ def exit_vehicle():
         return redirect('/login')
 
     if request.method == 'POST':
-        vehicle = request.form['vehicle_no'].upper()
+        vehicle = request.form['vehicle_no'].strip().upper()
         exit_time = datetime.now()
 
         conn = sqlite3.connect('parking.db')
@@ -153,10 +159,15 @@ def exit_vehicle():
 
         if data:
             record_id = data[0]
-            entry_time = datetime.strptime(data[1], "%Y-%m-%d %H:%M:%S")
-            v_type = data[2]
+            try:
+                entry_time = datetime.strptime(data[1], "%Y-%m-%d %H:%M:%S")
+            except Exception:
+                entry_time = exit_time # Fallback if parsing fails
 
-            hours = (exit_time - entry_time).seconds // 3600 + 1
+            v_type = str(data[2]) if data[2] else '4'
+
+            time_diff = exit_time - entry_time
+            hours = int(time_diff.total_seconds() // 3600) + 1
 
             # 💰 DIFFERENT PRICING
             if v_type == '2':
@@ -187,7 +198,9 @@ def exit_vehicle():
 
         else:
             conn.close()
-            return render_template('message.html', message="Vehicle not found!")
+            return render_template('message.html', 
+                                   message="Vehicle not found!", 
+                                   status="error")
 
     return render_template('exit.html')
 

@@ -1,34 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - Park.Guard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .login-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+    </style>
 </head>
-<body class="login-body">
+<body>
 
-<div class="login-container">
+<div class="login-wrapper">
 
-    <div class="login-card">
-
-        <div class="login-header">
-            🚗
-            <h2>Parking manager</h2>
-            <p>Sign in to manage parking</p>
-        </div>
+    <div class="glass gateway-card" style="width: 100%; max-width: 450px; text-align: center; padding: 50px 40px;">
+        
+        <i class="fa-solid fa-radar" style="font-size: 60px; color: var(--neon-blue); filter: drop-shadow(0 0 15px var(--neon-blue-glow)); margin-bottom: 20px;"></i>
+        <h2 style="font-size: 32px; letter-spacing: 2px;">Park.Guard</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 40px; text-transform: uppercase; font-size: 13px; letter-spacing: 1px;">Secure Access Terminal</p>
 
         <form method="POST">
+            
+            <div class="form-group" style="text-align: left;">
+                <label>Operator ID</label>
+                <input type="text" name="username" class="form-control" placeholder="admin" required autocomplete="off">
+            </div>
 
-            <label>Username</label>
-            <input type="text" name="username" placeholder="admin" required>
+            <div class="form-group" style="text-align: left;">
+                <label>Clearance Code</label>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+            </div>
 
-            <label>Password</label>
-            <input type="password" name="password" placeholder="••••••••" required>
-
-            <button class="login-btn">Sign In</button>
+            <button type="submit" class="btn btn-primary" style="margin-top: 10px;">
+                <i class="fa-solid fa-unlock-keyhole"></i> Authenticate
+            </button>
 
         </form>
 
-        <p class="demo-text">Demo: admin / 1234</p>
+        <div style="margin-top: 30px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
+            DEMO ACCESS: admin / 1234
+        </div>
 
     </div>
 

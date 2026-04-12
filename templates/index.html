@@ -1,92 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Park.Guard Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="layout">
-
-    <div class="sidebar">
-        <h2>🚗 ParkManager</h2>
-        <a href="/">Dashboard</a>
-        <a href="/entry">Vehicle Entry</a>
-        <a href="/exit">Vehicle Exit</a>
-        <a href="/view">View Records</a>
-        <a href="/logout">Logout</a>
+<!-- TOP NAVBAR -->
+<nav class="navbar">
+    <a href="/" class="nav-brand">
+        <i class="fa-solid fa-radar"></i>
+        <h2>Park.Guard</h2>
+    </a>
+    
+    <div class="nav-menu">
+        <a href="/" class="nav-pill active"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a href="/entry" class="nav-pill"><i class="fa-solid fa-right-to-bracket"></i> Entry</a>
+        <a href="/exit" class="nav-pill"><i class="fa-solid fa-right-from-bracket"></i> Exit</a>
+        <a href="/view" class="nav-pill"><i class="fa-solid fa-database"></i> Records</a>
     </div>
+    
+    <div class="nav-profile">
+        <i class="fa-solid fa-user-astronaut" style="color: var(--neon-blue);"></i>
+        <span style="font-weight: 500; font-size: 14px;">Admin</span>
+        <a href="/logout" style="margin-left: 10px; color: var(--neon-red);"><i class="fa-solid fa-power-off"></i></a>
+    </div>
+</nav>
 
-    <div class="main">
-
-        <div class="topbar">
-            <span class="menu-btn" onclick="toggleSidebar()">☰</span>
-            <span>Dashboard</span>
-        </div>
-
-        <div class="container">
-
-            <div class="grid">
-                <div class="card stat">
-                    <p>Total Slots</p>
-                    <h2>{{ total }}</h2>
+<div class="main-wrapper">
+    <div class="dashboard-split">
+        
+        <!-- LEFT PANEL: PARKING VISUALIZATION -->
+        <div class="panel-left">
+            <div class="glass slots-container">
+                <div class="section-header">
+                    <div class="section-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                    <h3 class="section-title">Live Sector Map</h3>
                 </div>
-
-                <div class="card stat">
-                    <p>Available</p>
-                    <h2 class="green">{{ available }}</h2>
-                </div>
-
-                <div class="card stat">
-                    <p>Occupied</p>
-                    <h2 class="red">{{ occupied }}</h2>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Parking Slots</h3>
-
-                <div class="slots">
+                
+                <div class="slots-grid">
                     {% for i in range(1, total+1) %}
                         {% if i in occupied_slots %}
-                            <div class="slot occupied">{{ i }}</div>
+                            <div class="slot-node occupied">
+                                {% if occupied_slots.get(i) == '2' %}
+                                    <i class="fa-solid fa-motorcycle node-icon" style="font-size: 28px;"></i>
+                                {% else %}
+                                    <i class="fa-solid fa-car-side node-icon"></i>
+                                {% endif %}
+                                S-{{ i }}
+                            </div>
                         {% else %}
-                            <div class="slot available">{{ i }}</div>
+                            <div class="slot-node available">
+                                <i class="fa-solid fa-check node-icon"></i>
+                                S-{{ i }}
+                            </div>
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="grid">
-                    <div class="card">
-                        <h3>Vehicle Entry</h3>
-                        <a href="/entry">
-                            <button class="btn btn-blue">Register Entry</button>
-                        </a>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: CONTROLS & ANALYTICS -->
+        <div class="panel-right">
+            
+            <div class="glass info-card">
+                <div class="section-header" style="margin-bottom: 25px;">
+                    <div class="section-icon"><i class="fa-solid fa-satellite-dish"></i></div>
+                    <h3 class="section-title">System Metrics</h3>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-box total">
+                        <div class="metric-value">{{ total }}</div>
+                        <div class="metric-label">Total Capacity</div>
                     </div>
-                    <div class="card">
-                        <h3>Vehicle Exit</h3>
-                        <a href="/exit">
-                            <button class="btn btn-red">Process Exit</button>
-                        </a>
+                    <div class="metric-box active">
+                        <div class="metric-value" style="color: var(--neon-green);">{{ available }}</div>
+                        <div class="metric-label">Available Nodes</div>
                     </div>
-                    <div class="card">
-                        <h3>View Records</h3>
-                        <a href="/view">
-                            <button class="btn btn-dark">View</button>
-                        </a>
+                    <div class="metric-box idle" style="grid-column: span 2;">
+                        <div class="metric-value" style="color: var(--neon-red);">{{ occupied }} / {{ total }}</div>
+                        <div class="metric-label">Occupied Space</div>
                     </div>
+                </div>
+
+                <div class="btn-action-group">
+                    <a href="/entry" class="btn btn-primary"><i class="fa-solid fa-arrow-right-to-bracket"></i> Add Entry</a>
+                    <a href="/exit" class="btn btn-danger"><i class="fa-solid fa-arrow-right-from-bracket"></i> Proc Exit</a>
+                </div>
+
+                <!-- DUMMY GRAPH UI -->
+                <div class="chart-container">
+                    <div style="position: absolute; top: 10px; left: 20px; font-size: 11px; color: var(--neon-blue); text-transform: uppercase;">Traffic Frequency (Last 12hr)</div>
+                    <div class="chart-bar" style="height: 30%;"></div>
+                    <div class="chart-bar" style="height: 50%;"></div>
+                    <div class="chart-bar" style="height: 40%;"></div>
+                    <div class="chart-bar" style="height: 80%;"></div>
+                    <div class="chart-bar" style="height: 60%;"></div>
+                    <div class="chart-bar" style="height: 100%; background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue-glow);"></div>
                 </div>
             </div>
 
         </div>
 
     </div>
-
 </div>
-<script>
-function toggleSidebar() {
-    document.querySelector('.sidebar').classList.toggle('active');
-    document.querySelector('.main').classList.toggle('shift');
-}
-</script>
+
 </body>
 </html>
